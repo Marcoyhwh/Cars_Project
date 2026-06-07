@@ -1,6 +1,3 @@
-const path = require('path');
-const fs = require('fs');
-
 const request = require('supertest');
 const app = require('../src/app');
 

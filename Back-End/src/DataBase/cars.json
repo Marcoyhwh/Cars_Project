@@ -15,10 +15,10 @@
             "id": 2,
             "name": "Camry"
           },
-            {
-                "id": 3,
-                "name": "Yaris"
-            }
+          {
+            "id": 3,
+            "name": "Yaris"
+          }
         ]
       },
       {
@@ -45,7 +45,6 @@
       }
     ]
   },
-
   {
     "id": 2,
     "brand": "Honda",
@@ -80,7 +79,6 @@
       }
     ]
   },
-
   {
     "id": 3,
     "brand": "Ford",
