@@ -1,116 +1,136 @@
 [
-  {
-    "id": 1,
-    "brand": "Toyota",
-    "models": [
-      {
+    {
         "id": 1,
-        "model": "Sedãs",
-        "cars": [
-          {
-            "id": 1,
-            "name": "Corolla"
-          },
-          {
-            "id": 2,
-            "name": "Camry"
-          },
-          {
-            "id": 3,
-            "name": "Yaris"
-          }
+        "brand": "Toyota",
+        "models": [
+            {
+                "id": 1,
+                "model": "Sedãs",
+                "cars": [
+                    {
+                        "id": 1,
+                        "name": "Corolla"
+                    },
+                    {
+                        "id": 2,
+                        "name": "Camry"
+                    },
+                    {
+                        "id": 3,
+                        "name": "Yaris"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "model": "SUVs",
+                "cars": [
+                    {
+                        "id": 1,
+                        "name": "Corolla Cross"
+                    },
+                    {
+                        "id": 2,
+                        "name": "Yaris Cross"
+                    },
+                    {
+                        "id": 3,
+                        "name": "SW4"
+                    },
+                    {
+                        "id": 4,
+                        "name": "RAV4"
+                    }
+                ]
+            }
         ]
-      },
-      {
+    },
+    {
         "id": 2,
-        "model": "SUVs",
-        "cars": [
-          {
-            "id": 1,
-            "name": "Corolla Cross"
-          },
-          {
-            "id": 2,
-            "name": "Yaris Cross"
-          },
-          {
-            "id": 3,
-            "name": "SW4"
-          },
-          {
-            "id": 4,
-            "name": "RAV4"
-          }
+        "brand": "Honda",
+        "models": [
+            {
+                "id": 1,
+                "model": "Sedãs",
+                "cars": [
+                    {
+                        "id": 1,
+                        "name": "Civic"
+                    },
+                    {
+                        "id": 2,
+                        "name": "Accord"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "model": "SUVs",
+                "cars": [
+                    {
+                        "id": 1,
+                        "name": "HR-V"
+                    },
+                    {
+                        "id": 2,
+                        "name": "CR-V"
+                    }
+                ]
+            }
         ]
-      }
-    ]
-  },
-  {
-    "id": 2,
-    "brand": "Honda",
-    "models": [
-      {
-        "id": 1,
-        "model": "Sedãs",
-        "cars": [
-          {
-            "id": 1,
-            "name": "Civic"
-          },
-          {
-            "id": 2,
-            "name": "Accord"
-          }
+    },
+    {
+        "id": 3,
+        "brand": "Ford",
+        "models": [
+            {
+                "id": 1,
+                "model": "Sedãs",
+                "cars": [
+                    {
+                        "id": 1,
+                        "name": "Fusion"
+                    },
+                    {
+                        "id": 2,
+                        "name": "Focus"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "model": "SUVs",
+                "cars": [
+                    {
+                        "id": 1,
+                        "name": "EcoSport"
+                    },
+                    {
+                        "id": 2,
+                        "name": "Escape"
+                    }
+                ]
+            }
         ]
-      },
-      {
-        "id": 2,
-        "model": "SUVs",
-        "cars": [
-          {
-            "id": 1,
-            "name": "HR-V"
-          },
-          {
-            "id": 2,
-            "name": "CR-V"
-          }
+    },
+    {
+        "id": 4,
+        "brand": "Chevrolet",
+        "models": [
+            {
+                "id": 1,
+                "model": "Sedãs",
+                "cars": [
+                    {
+                        "id": 1,
+                        "name": "Onix"
+                    },
+                    {
+                        "id": 2,
+                        "name": "Cruze"
+                    }
+                ]
+            }
         ]
-      }
-    ]
-  },
-  {
-    "id": 3,
-    "brand": "Ford",
-    "models": [
-      {
-        "id": 1,
-        "model": "Sedãs",
-        "cars": [
-          {
-            "id": 1,
-            "name": "Fusion"
-          },
-          {
-            "id": 2,
-            "name": "Focus"
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "model": "SUVs",
-        "cars": [
-          {
-            "id": 1,
-            "name": "EcoSport"
-          },
-          {
-            "id": 2,
-            "name": "Escape"
-          }
-        ]
-      }
-    ]
-  }
+    }
 ]

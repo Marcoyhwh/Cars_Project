@@ -8,7 +8,7 @@ describe('Usando o método GET em /cars', () => {
         expect(response.status).toBe(200);
     });
 
-    it('Deve retorna um aray de objetos', async () => {
+    it('Deve retorna um array de objetos', async () => {
         const response = await request(app).get('/cars');
 
         expect(Array.isArray(response.body)).toBe(true);
