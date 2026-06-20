@@ -17,7 +17,7 @@ app.use(express.json());
 // A partir daqui, serão escritas as rotas CRUD
 
 // Buscar todos os carros
-app.get('/cars', async (req, res) => {
+app.get('/garage', async (req, res) => {
     const cars = await readCarsFile();
     res.status(200).json(cars);
 });
@@ -25,12 +25,13 @@ app.get('/cars', async (req, res) => {
 // Read
 
 // Buscar por marca
-app.get('/cars/:id', async (req, res) => {
+app.get('/garage/:brandID', async (req, res) => {
     const cars = await readCarsFile();
     // A linha abaixo define que o ID será o ID que foi declarado pelo cliente na requisição
-    const { id } = req.params;
+    const { brandID } = req.params;
     // Para ajudar a entender a linha abaixo, tente ler ela ao contrário
-    const brand = cars.find((brand) => brand.id === Number(id));
+    // o nome de brand.(ESTE NOME) deve ser o mesmo de === Number (ESTE NOME)
+    const brand = cars.find((brand) => brand.brandID === Number(brandID));
 
     if (!brand) {
         return res.status(404).json({ message: 'Brand not found' });
@@ -42,7 +43,7 @@ app.get('/cars/:id', async (req, res) => {
 // Create
 
 // Adicionar um a nova Marca e seus respectivos carros.
-app.post('/cars', async (req, res) => {
+app.post('/garage', async (req, res) => {
     const { brand, models } = req.body;
     const carsFile = await readCarsFile()
 
@@ -52,13 +53,13 @@ app.post('/cars', async (req, res) => {
 
     // Definindo estrutura para um novo objeto (marca) ser adicionado no arquivo JSON
     const newBrand = {
-        id: carsFile.length + 1,
+        brandID: carsFile.length + 1,
         brand,
         models: models.map((name, modelIndex) => ({
-            id: modelIndex + 1,
+            modelID: modelIndex + 1,
             model: name.model,
             cars: name.cars.map((car, carIndex) => ({
-                id: carIndex + 1,
+                carID: carIndex + 1,
                 name: car.name
             }))
         }))
@@ -66,38 +67,60 @@ app.post('/cars', async (req, res) => {
 
     carsFile.push(newBrand);
 
-    await writeCarsFile(carsFile); 
+    await writeCarsFile(carsFile);
 
     res.status(201).json({ message: 'Brand added successfully' });
 });
 
-// Update
+// Update parts
 
-app.patch('/cars', async (req, res) => {
-    const readCarsFile = await readCarsFile();
-    const jsonCarFile = JSON.parse(readCarFile);
+app.patch('/garage/:brandID/models/:modelID/cars/:carID', async (req, res) => {
+    const readFile = await readCarsFile();
 
-    const { id } = req.params;
+    const { carID } = req.params;
     const { name } = req.body;
 
-    const carIndex = jsonCarFile.findIndex(( car ) => car.id === number(id))
+    const carIndex = readFile.findIndex((car) => car.brandID === Number(carID));
 
-    if (id <= 0) {
-        return res.status(404).json{('erro, verifique o id digitado e tente novamente!')}
+    if (carID <= 0) {
+        return res.status(404).json({ message: 'Error, verify the ID and go already' });
     }
 
     const patchName = () => {
-        if (typeof name === "string") { 
-            carIndex[name].name 
+        if (typeof name === "string") {
+            carIndex[name].send[name]
         } else {
             console.log('o valor digitado não é uma string')
         }
+    };
+
+    readFile.push(patchName);
+    await writeCarsFile(readFile);
+    return res.status(200).json({ message: 'nome atualizado com sucesso!' });
+
+});
+
+
+
+// Upgrade blocks
+
+app.delete('/garage', async () => {
+    const [id] = req.params;
+
+    const carFile = await readCarsFile();
+
+    try {
+        const result = carFile.remove(id);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'erro, verifique o ID digitado e tente denovo!' })
+        }
+
+        return res.status(204).end(); cars
+    } catch (err) {
+        console.log(err.message)
+        return res.status(404).json({ message: 'Internal Server Error! ' });
     }
-    readCarsFile.push(patchName)
-
-    await writeCarsFile()
-
-    return res.status(200).json{( 'nome atualizado com sucesso!' )}
 
 });
 

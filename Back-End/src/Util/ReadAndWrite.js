@@ -1,7 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 
-const pathCarsFile = path.resolve(__dirname, '..', 'DataBase', 'cars.json');
+const pathCarsFile = path.resolve(__dirname, '..', 'DataBase', 'garage.json');
 
 const readCarsFile = async () => {
     const readFile = await fs.readFile(pathCarsFile, 'utf-8');
