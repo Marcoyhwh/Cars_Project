@@ -1,6 +1,8 @@
 1. Para iniciar o projeto no backend rode no terminal ( dentro da pasta do backend ):
 npm run dev
 
+Rotas CRUD: http://localhost:3000/
+
 2. Exemplo de como deve ser a estrutura de uma requisição do tipo POST por parte de um cliente para adicionar uma nova marca:
 
 ```json

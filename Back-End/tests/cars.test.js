@@ -26,7 +26,7 @@ describe('Usando o método GET em /garage/:brandID', () => {
     it('Deve retornar um objeto', async () => {
         const response = await request(app).get('/garage/1');
 
-        expect( typeof response.body === 'object' && response.body != null && Array.isArray(response.body) === false ).toBe(true);
+        expect(typeof response.body === 'object' && response.body != null && Array.isArray(response.body) === false).toBe(true);
     });
 });
 
@@ -38,10 +38,15 @@ describe('Usando o método POST em /garage', () => {
     });
 });
 
-describe('Usando o método PATCH em /garage/:brandID/models/modelsID/cars/carsID', () => {
-    it('Deve retornar status 200 (Sucessfully)', async () => {
-        const response = await request(app).patch('/garage/1/models/1/cars/1').send({ "name": "testName" });
+describe('Usando o método PATCH em /garage/:brandID/models/modelID/cars/carID', () => {
+    it('Deve validar se a troca no nome foi bem sucedida', async () => {
+        const Route = '/garage/1/models/2/cars/1'
+        const Response = await request(app).patch(Route).send({ "name": 'testName' });
+        const Validation = await request(app).get(Route);
 
-        expect(response.status).toBe(200);
-    });
+        expect(Validation.body.name).toBe('testName');
+        expect(Response.status).toBe(200);
+
+    })
+
 });

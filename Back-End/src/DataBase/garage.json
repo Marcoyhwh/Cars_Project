@@ -27,7 +27,7 @@
                 "cars": [
                     {
                         "carID": 1,
-                        "name": "Corolla Cross"
+                        "name": "Teste1"
                     },
                     {
                         "carID": 2,
@@ -135,7 +135,7 @@
     },
     {
         "brandID": 5,
-        "brand": "Test",
+        "brand": "BYD",
         "models": [
             {
                 "modelID": 1,
@@ -143,11 +143,11 @@
                 "cars": [
                     {
                         "carID": 1,
-                        "name": "name1"
+                        "name": "BYD King"
                     },
                     {
                         "carID": 2,
-                        "name": "name2"
+                        "name": "BYD Seal"
                     }
                 ]
             }
