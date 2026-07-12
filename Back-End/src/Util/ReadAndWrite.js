@@ -1,5 +1,9 @@
-const fs = require('fs').promises;
-const path = require('path');
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const pathCarsFile = path.resolve(__dirname, '..', 'DataBase', 'garage.json');
 
@@ -9,11 +13,7 @@ const readCarsFile = async () => {
 };
 
 const writeCarsFile = async (cars) => {
-    const writeFile = await fs.writeFile(pathCarsFile, JSON.stringify(cars));
-    return writeFile;
+    await fs.writeFile(pathCarsFile, JSON.stringify(cars, null, 2));
 };
 
-module.exports = {
-    readCarsFile,
-    writeCarsFile,
-};
+export { readCarsFile, writeCarsFile };

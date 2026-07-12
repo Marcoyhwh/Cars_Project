@@ -3,9 +3,6 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 
-import {readCarsFile, writeCarsFile} from './Util/ReadAndWrite.js';
-
-
 // p/ o express, como é uma função, é necessário executá-la para criar a aplicação e só dps usar seus métodos necessários p/ a aplicação.
 const app = express();
 
