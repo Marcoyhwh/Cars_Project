@@ -52,7 +52,7 @@ app.put('/User/:id', async (req, res) => {
 })
 
 
-app.delete('/user/:id', async (req, res) => {
+app.delete('/User/:id', async (req, res) => {
     const getUsers = await prisma.user.findMany()
     try {
         const result = await prisma.user.delete({

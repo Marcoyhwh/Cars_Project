@@ -18,4 +18,40 @@ model User {
   email String  @unique
   name  String
   password String
-} 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Brand {
+  id        String         @id @default(auto()) @map("_id") @db.ObjectId
+  brandID   Int            @unique
+  name      String
+  models    VehicleModel[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model VehicleModel {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  modelID   Int
+  name      String
+  brandId   String   @db.ObjectId
+  brand     Brand    @relation(fields: [brandId], references: [id])
+  cars      Car[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([brandId])
+}
+
+model Car {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  carID     Int
+  name      String
+  modelId   String       @db.ObjectId
+  model     VehicleModel @relation(fields: [modelId], references: [id])
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@index([modelId])
+}
