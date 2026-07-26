@@ -141,7 +141,7 @@ app.patch('/Brand', async (req, res) => {
 // Delete Blocks
 app.delete('/Brand', async (req, res) => {
 
-    const { brandID } = req.query;
+const { brandID, modelID, carID } = req.query;
 
     try {
         // Busca a brand pelo brandID numérico para pegar o ObjectId
@@ -149,9 +149,33 @@ app.delete('/Brand', async (req, res) => {
             where: { brandID: Number(brandID) }
         });
 
+        const vehicleModel = await prisma.vehicleModel.findFirst({
+            where: { modelID: Number(modelID) }
+        });
+
+        const car = await prisma.car.findFirst({
+            where: { carID: Number(carID) }
+        });
+
         if (!brand) {
             return res.status(404).json({ message: 'Brand not found' });
         }
+
+        if (!vehicleModel) {
+            return res.status(404).json({ message: 'Vehicle not found' });
+        }
+
+        if (!car) {
+            return res.status(404).json({ message: 'Car not found' });
+        }
+
+        await prisma.car.delete({
+            where: { id: car.id }
+        });
+
+        await prisma.vehicleModel.delete({
+            where: { id: vehicleModel.id }
+        });
 
         await prisma.brand.delete({
             where: { id: brand.id }
