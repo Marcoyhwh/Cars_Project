@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
 import app from '../app.js';
 import { PrismaClient } from '@prisma/client';
+import jwt from 'jsonwebtoken';
+import 'dotenv/config'
 
 
 const prisma = new PrismaClient();
@@ -59,12 +61,28 @@ app.post('/User/Login', async (req, res) => {
     }
 
     const verifyCredentials = await bcrypt.compare(req.body.password, verifyEmail.password) // usa o verifyEmail.password para pegar a senha que ta junto da linha do email inserido
-    if (verifyCredentials) {
-        return res.status(200).json({ message: 'Sucess Login!' })
-    } else {
+
+    if (!verifyCredentials) {
         return res.status(401).json({ message: 'Email ou senha não encontrado' }) // usa-se 401 e a mesma mensagem para o atacante nao saber nem quais emails nem senhas que existem
     }
 
+    // Gera o token — payload tem o id e email do usuário
+    // O token expira em 8 horas
+    const token = jwt.sign( //sign é a assinatura do meu token
+        { id: verifyEmail.id, email: verifyEmail.email },
+        process.env.JWT_SECRET,
+        { expiresIn: '5h' }
+    );
+
+    return res.status(200).json({
+        message: "Success Login!",
+        token,
+        // user: {
+        //     id: verifyEmail.id,
+        //     name: verifyEmail.name,              essas linhas comentadas são opcionas, poderão ser ultilizadas para saber
+        //     email: verifyEmail.email             quem acabou de fazer login, sem precisar fazer outra requisição imediatamente.
+        // }                                      fica seu critério implementar ou não.
+    })
 })
 
 // Alterar dados dos usuários
