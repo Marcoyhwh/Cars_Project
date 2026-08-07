@@ -1,6 +1,7 @@
 import app from '../app.js';
 import { PrismaClient } from '@prisma/client';
-
+import authMiddleware from '../Util/auth.middleware.js';
+import roleMiddleware from '../Util/role.middleware.js';
 
 // ROTAS CRUD
 
@@ -48,9 +49,11 @@ app.get('/Brand', async (req, res) => {
 
 })
 
-
 // Adicionar uma nova Marca e seus respectivos carros. CREATE
-app.post('/Brand', async (req, res) => {
+app.post('/Brand', authMiddleware, roleMiddleware('ADMIN'), async (req, res) => {
+
+// Ordem: authMiddleware roda primeiro (obetem req.user),
+// só depois roleMiddleware consegue verificar req.user.role.
 
     // 1. Busca apenas a última marca ordenada pelo brandID, modelID e carID
     const lastBrand = await prisma.brand.findFirst({
@@ -110,9 +113,8 @@ app.post('/Brand', async (req, res) => {
 
 });
 
-
 // Update parts
-app.patch('/Brand', async (req, res) => {
+app.patch('/Brand', authMiddleware, roleMiddleware('ADMIN'), async (req, res) => {
 
     const { carID } = req.query;
     const { name } = req.body;
@@ -139,7 +141,7 @@ app.patch('/Brand', async (req, res) => {
 
 
 // Delete Blocks
-app.delete('/Brand', async (req, res) => {
+app.delete('/Brand', authMiddleware, roleMiddleware('ADMIN'), async (req, res) => {
 
 const { brandID, modelID, carID } = req.query;
 
