@@ -77,7 +77,7 @@ app.post('/Brand', authMiddleware, roleMiddleware('ADMIN'), async (req, res) => 
     });
 
 
-    // 2. Define o novo ID: se existir uma marca anterior, pega o ID dela + 1. Se for a primeira, começa em 1.
+    // 2. Define o novo ID: se existir uma marca anterior, pega o ID dela + 1. Os dois pontos segnifica que se for a primeira, começa com 1.
     const nextBrandId = lastBrand ? lastBrand.brandID + 1 : 1;
     const nextVehicleId = lastVehicle ? lastVehicle.modelID + 1 : 1;
     const nextCarId = lastCar ? lastCar.carID + 1 : 1;
@@ -121,7 +121,7 @@ app.patch('/Brand', authMiddleware, roleMiddleware('ADMIN'), async (req, res) =>
 
 
     // Busca o carro pelo carID numérico para obter o ObjectId
-    const car = await prisma.car.findFirst({
+    const car = await prisma.car.findFirst({ // car ta especificando em qual model o prisma deve procurar o carID que você passa abaixo.
         where: { carID: Number(carID) }
     });
 

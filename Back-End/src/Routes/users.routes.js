@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import app from '../app.js';
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
-import 'dotenv/config'
+import 'dotenv/config' // essa biblioteca permite usar dados sensíveis (dados de arquivo .env) no projeto.
 import authMiddleware from '../Util/auth.middleware.js';
 import roleMiddleware from '../Util/role.middleware.js';
 
