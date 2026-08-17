@@ -1,10 +1,12 @@
 // Jest é um ambiente própio e por padrão ele lida com CommonJS, pra ele ler em ESModule tem que instalar uma bibliota babel sla oq.
 import supertest from 'supertest';
-import routes from '../src/Routes/brand.routes.js'
 import postFile from './data/postTest.js';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config' 
 
+import app from '../src/app.js';
+import '../src//Routes/brand.routes.js';
+import '../src/Routes/users.routes.js';
 
 
 
@@ -38,25 +40,25 @@ const standardToken = jwt.sign(
 
 describe('Usando o método GET em /Brand', () => {
     it('Retorna a lista completa de todos os carros', async () => {
-        const response = await supertest(routes).get('/Brand');
+        const response = await supertest(app).get('/Brand');
 
         expect(response.status).toBe(200);
     });
 
     it('Retorna a lista completa dos carros por marca', async () => {
-        const response = await supertest(routes).get('/Brand?brandID=1');
+        const response = await supertest(app).get('/Brand?brandID=1');
 
         expect(response.status).toBe(200);
     });
 
     it('Retorna a lista completa dos carros por modelo', async () => {
-        const response = await supertest(routes).get('/Brand?brandID=1&modelID=1');
+        const response = await supertest(app).get('/Brand?brandID=1&modelID=1');
 
         expect(response.status).toBe(200);
     });
 
     it('Retorna o carro específico', async () => {
-        const response = await supertest(routes).get('/Brand?brandID=1&modelID=1&carID=1');
+        const response = await supertest(app).get('/Brand?brandID=1&modelID=1&carID=1');
 
         expect(response.status).toBe(200);
     });

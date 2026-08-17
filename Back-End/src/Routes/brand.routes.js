@@ -14,18 +14,29 @@ app.get('/Brand', async (req, res) => {
     let getCar = []
 
     const { carID } = req.query;
+    const { brandID } = req.query;
+    const { modelID } = req.query
 
     if (req.query.carID) {
         getCar = await prisma.car.findFirst({
             where: {
                 carID: Number(carID),
+            }
+        })
+    } else if (req.query.modelID) {
+        getCar = await prisma.vehicleModel.findMany({
+            where: {
+                modelID: Number(modelID),
             },
             include: {
-                model: true  // traz o VehicleModel junto, para confirmar o contexto
-            },
+                cars: true
+            }
         })
     } else if (req.query.brandID) {
         getCar = await prisma.brand.findMany({
+            where: {
+                brandID: Number(brandID),
+            },
             include: {
                 models: {
                     include: {
@@ -39,8 +50,8 @@ app.get('/Brand', async (req, res) => {
         getCar = await prisma.brand.findMany()
     }
 
-    if (!getCar) {
-        return res.status(404).json({ message: 'Car not found' });
+    if (!getCar === null) {
+        return res.status(404).json({ message: 'Car not found' }); // arrumar pois esse if nunca vai cair
     }
 
 
@@ -49,13 +60,14 @@ app.get('/Brand', async (req, res) => {
 
 })
 
-// Adicionar uma nova Marca e seus respectivos carros. CREATE
-app.post('/Brand', authMiddleware, roleMiddleware('ADMIN'), async (req, res) => {
+// Adicionar uma nova Marca e seus respectivos carros ou adicionar um modelo de carros e seus respectivos carros a uma marca já existente.
+app.post('/Brand', authMiddleware, roleMiddleware('ADMIN'), async (req, res) => { // arrumar
 
-// Ordem: authMiddleware roda primeiro (obetem req.user),
-// só depois roleMiddleware consegue verificar req.user.role.
+    // Ordem: authMiddleware roda primeiro (obetem req.user),
+    // só depois roleMiddleware consegue verificar req.user.role.
 
     // 1. Busca apenas a última marca ordenada pelo brandID, modelID e carID
+
     const lastBrand = await prisma.brand.findFirst({
         orderBy: {
             brandID: 'desc',
@@ -76,42 +88,69 @@ app.post('/Brand', authMiddleware, roleMiddleware('ADMIN'), async (req, res) => 
         },
     });
 
-
-    // 2. Define o novo ID: se existir uma marca anterior, pega o ID dela + 1. Os dois pontos segnifica que se for a primeira, começa com 1.
-    const nextBrandId = lastBrand ? lastBrand.brandID + 1 : 1;
-    const nextVehicleId = lastVehicle ? lastVehicle.modelID + 1 : 1;
-    const nextCarId = lastCar ? lastCar.carID + 1 : 1;
+    if (req.body.marcaID) {
+        const nextVehicleId = lastVehicle ? lastVehicle.modelID + 1 : 1;
+        const nextCarId = lastCar ? lastCar.carID + 1 : 1;
 
 
-
-    const newBrand = await prisma.brand.create({
-        data: {
-            brandID: nextBrandId,
-            name: req.body.Brand,
-        },
-    })
-
-
-    const newVehicle = await prisma.vehicleModel.create({
-        data: {
-            modelID: nextVehicleId,
-            name: req.body.VehicleModel,
-            brandId: newBrand.id,
-        },
-    })
+        const newVehicle = await prisma.vehicleModel.create({
+            where: {
+                brandID: req.body.marcaID,
+            },
+            data: {
+                modelID: nextVehicleId,
+                name: req.body.VehicleModel,
+            },
+        })
 
 
-    const newCar = await prisma.car.create({
-        data: {
-            carID: nextCarId,
-            name: req.body.Car,
-            modelId: newVehicle.id,
-        },
-    })
+        const newCar = await prisma.car.create({
+            data: {
+                carID: nextCarId,
+                name: req.body.Car,
+                modelId: newVehicle.id,
+            },
+        })
+        res.status(201).json({ message: 'Model added successfully in the brand!' });
+    } else {
+        // 2. Define o novo ID: se existir uma marca anterior, pega o ID dela + 1. Os dois pontos segnifica que se for a primeira, começa com 1.
+        const nextBrandId = lastBrand ? lastBrand.brandID + 1 : 1;
+        const nextVehicleId = lastVehicle ? lastVehicle.modelID + 1 : 1;
+        const nextCarId = lastCar ? lastCar.carID + 1 : 1;
+
+
+
+        const newBrand = await prisma.brand.create({
+            data: {
+                brandID: nextBrandId,
+                name: req.body.Brand,
+            },
+        })
+
+
+        const newVehicle = await prisma.vehicleModel.create({
+            data: {
+                modelID: nextVehicleId,
+                name: req.body.VehicleModel,
+                brandId: newBrand.id,
+            },
+        })
+
+
+        const newCar = await prisma.car.create({
+            data: {
+                carID: nextCarId,
+                name: req.body.Car,
+                modelId: newVehicle.id,
+            },
+        })
+    }
+
 
     res.status(201).json({ message: 'Brand added successfully' });
 
 });
+
 
 // Update parts
 app.patch('/Brand', authMiddleware, roleMiddleware('ADMIN'), async (req, res) => {
@@ -143,7 +182,7 @@ app.patch('/Brand', authMiddleware, roleMiddleware('ADMIN'), async (req, res) =>
 // Delete Blocks
 app.delete('/Brand', authMiddleware, roleMiddleware('ADMIN'), async (req, res) => {
 
-const { brandID, modelID, carID } = req.query;
+    const { brandID, modelID, carID } = req.query;
 
     try {
         // Busca a brand pelo brandID numérico para pegar o ObjectId
